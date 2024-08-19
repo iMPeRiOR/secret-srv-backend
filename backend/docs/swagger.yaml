@@ -1,0 +1,112 @@
+definitions:
+  models.Data:
+    properties:
+      data:
+        type: string
+      expire:
+        type: integer
+      views:
+        type: integer
+    required:
+    - data
+    - expire
+    - views
+    type: object
+  models.ErrorModel:
+    properties:
+      message:
+        type: string
+    type: object
+  models.ResponseData:
+    properties:
+      data:
+        type: string
+      message:
+        type: string
+      object:
+        $ref: '#/definitions/models.Secret'
+    type: object
+  models.ResultToken:
+    properties:
+      data:
+        type: string
+      message:
+        type: string
+    type: object
+  models.Secret:
+    properties:
+      expireDate:
+        type: string
+      views:
+        type: integer
+    required:
+    - expireDate
+    - views
+    type: object
+info:
+  contact: {}
+paths:
+  /generate:
+    post:
+      consumes:
+      - application/json
+      - text/xml
+      description: This route generates a new secret have the user's data
+      parameters:
+      - description: Generate a secret
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Data'
+      produces:
+      - application/json
+      - text/xml
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResultToken'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorModel'
+      summary: Create a new secret
+      tags:
+      - token
+  /get/{token}:
+    post:
+      consumes:
+      - application/json
+      - text/xml
+      description: This routes generate new secret have the user's data
+      parameters:
+      - description: get the secret info
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      - text/xml
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseData'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorModel'
+      summary: analyze the secret
+      tags:
+      - token
+swagger: "2.0"
